@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0-only
 #ifndef KANTHAL_H_INCLUDED
 #define KANTHAL_H_INCLUDED
 
