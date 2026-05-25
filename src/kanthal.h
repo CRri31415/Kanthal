@@ -7,15 +7,10 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-/**
- * @brief error raise function.
- * @param err_msg error message within 255 characters.
- * @param err_msg_len length of error message.
- * @return returns nothing.
-*/
-void error_raise(char *err_msg,uint8_t err_msg_len);
+#include "kanthal_error.h"
 
-
+#define KANTHAL_CACHELINE_SIZE 64
+#define KANTHAL_PAGE_SIZE 65536
 
 /**
  * @defgroup arena_group
@@ -28,19 +23,29 @@ void error_raise(char *err_msg,uint8_t err_msg_len);
  * @brief structure of arena allocation.
 */
 typedef struct
-    { char *space
-    ; size_t sizlimit
-    ; size_t offset
+    { uint8_t *space
+    ; uint32_t size_limit
+    ; uint32_t hot_offset
+    ; uint32_t cold_offset
     ; } arena;
 
 /**
  * @brief initialize and make arena.
  * @param ani_size size of arena. (byte)
- * @param ani_retnull arena_init returns null pointer when malloc() has failed and ani_retnull is True. And calls error_raise() when ani_retnull is False.
- * @return returns address of arena
+ * @return returns address of arena.
+ * @note arena_init calls error_raise() when failed.
  * @warning please use with arena_demoli().
 */
-arena* arena_init(size_t ani_size,bool ani_retnull);
+arena* arena_init(uint32_t ani_size);
+
+/**
+ * @brief allocation arena variable.
+ * @param aac_arena address of arena.
+ * @param aac_datatype hot - 1, cold - 0
+ * @param aac_datasize bytes of allocation size.
+ * @return returns address of variable on the arena.
+*/
+uint32_t arena_alloc(arena *aac_arena,uint8_t aac_datatype,uint8_t aac_datasize);
 
 /**
  * @brief frees arena.
@@ -53,15 +58,6 @@ void arena_demoli(arena *adm_arena);
 
 
 
-/**
- * @brief scheme of heapsort.
- * @param hss_cnt count of object.
- * @param hss_cmp compare function. (addr0, addr1, arena_offset)
- * @param hss_swp swap function. (addr0, addr1, arena_offset)
- * @param hss_arena_offset arena offset of object.
- * @note hss_cmp should return uint8_t 1,0,-1. return 1 when addr0 is prioritized, WLOG.
- * @return returns nothing.
-*/
-void heapsort_scheme(uint32_t hss_cnt,uint8_t (*hss_cmp)(uint32_t,uint32_t,size_t),void (*hss_swp)(uint32_t,uint32_t,size_t),size_t hss_arena_offset);
+void specialized_sort
 
 #endif
