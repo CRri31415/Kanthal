@@ -9,7 +9,7 @@
 
 #include "kanthal_error.h"
 
-#define KANTHAL_CACHELINE_SIZE 64
+#define KANTHAL_CACHELINE_SIZE 64 /* must leq than 255 */
 #define KANTHAL_PAGE_SIZE 65536
 
 /**
@@ -24,9 +24,9 @@
 */
 typedef struct
     { uint8_t *space
-    ; uint32_t size_limit
-    ; uint32_t hot_offset
-    ; uint32_t cold_offset
+    ; uintptr_t size_limit
+    ; uintptr_t hot_offset
+    ; uintptr_t cold_offset
     ; } arena;
 
 /**
@@ -36,7 +36,7 @@ typedef struct
  * @note arena_init calls error_raise() when failed.
  * @warning please use with arena_demoli().
 */
-arena* arena_init(uint32_t ani_size);
+arena* arena_init(uintptr_t ani_size);
 
 /**
  * @brief allocation arena variable.
@@ -45,7 +45,7 @@ arena* arena_init(uint32_t ani_size);
  * @param aac_datasize bytes of allocation size.
  * @return returns address of variable on the arena.
 */
-uint32_t arena_alloc(arena *aac_arena,uint8_t aac_datatype,uint8_t aac_datasize);
+uintptr_t arena_alloc(arena *aac_arena,uint8_t aac_datatype,uint8_t aac_datasize);
 
 /**
  * @brief frees arena.
