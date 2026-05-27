@@ -41,11 +41,11 @@ arena* arena_init(uintptr_t ani_size);
 /**
  * @brief allocation arena variable.
  * @param aac_arena address of arena.
- * @param aac_datatype hot - 1, cold - 0
  * @param aac_datasize bytes of allocation size.
+ * @param aac_datatype hot - true, cold - false
  * @return returns address of variable on the arena.
 */
-uintptr_t arena_alloc(arena *aac_arena,uint8_t aac_datatype,uint8_t aac_datasize);
+uintptr_t arena_alloc(arena *aac_arena,uintptr_t aac_datasize,bool aac_datatype);
 
 /**
  * @brief frees arena.
@@ -58,6 +58,6 @@ void arena_demoli(arena *adm_arena);
 
 
 
-void specialized_sort
+void specialized_sort();
 
 #endif
