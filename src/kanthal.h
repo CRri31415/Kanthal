@@ -48,6 +48,15 @@ arena* arena_init(uintptr_t ani_size);
 uintptr_t arena_alloc(arena *aac_arena,uintptr_t aac_datasize,bool aac_datatype);
 
 /**
+ * @brief pop arena.
+ * @param arp_arena address of arena.
+ * @param arp_datasize bytes of pop size.
+ * @param arp_datatype hot - true, cold - false
+ * @return returns nothing.
+*/
+void arena_pop(arena *arp_arena,uintptr_t arp_datasize,bool arp_datatype);
+
+/**
  * @brief frees arena.
  * @param adm_arena address of arena.
  * @return returns nothing.
