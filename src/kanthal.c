@@ -41,6 +41,25 @@ uintptr_t arena_alloc(arena* aac_arena,uintptr_t aac_datasize,bool aac_datatype)
         ; }
     }
 
+void arena_pop(arena* arp_arena,uintptr_t arp_datasize,bool arp_datatype)
+    { if(arp_arena==NULL)
+        { error_raise(ERROR_NULL_POINTER)
+        ; return
+        ; }
+      if(arp_datasize>(*arp_arena).cold_offset-(*arp_arena).hot_offset+1)
+        { error_raise(ERROR_ARENA_ALLOC_EXHAUSTED)
+        ; return
+        ; }
+      if(arp_datatype)
+        { (*arp_arena).cold_offset+=arp_datasize
+        ; return
+        ; }
+      else
+        { (*arp_arena).hot_offset-=arp_datasize
+        ; return
+        ; }
+    }
+
 void arena_demoli(arena *adm_arena)
     { free((*adm_arena).space-(uintptr_t)(*adm_arena).space[-1])
     ; free(adm_arena)
